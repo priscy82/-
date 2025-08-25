@@ -29,7 +29,7 @@ export declare function makeCacheableSignalKeyStore(
 export declare const addTransactionCapability: (
     state: SignalKeyStore,
     logger: Logger,
-    { maxCommitRetries, delayBetweenTriesMs }: TransactionCapabilityOptions
+    options: TransactionCapabilityOptions
 ) => SignalKeyStoreWithTransaction;
 
 /**
@@ -39,6 +39,8 @@ export declare const initAuthCreds: () => AuthenticationCreds;
 
 /**
  * Initialize new auth credentials with multi-session support
- * @param sessionId unique ID for the session
+ * @param sessionId unique ID for the session (default = "default")
  */
-export declare const initMultiAuthCreds: (sessionId?: string) => AuthenticationCreds & { sessionId: string };
+export declare const initMultiAuthCreds: (
+    sessionId?: string
+) => AuthenticationCreds & { sessionId: string };
