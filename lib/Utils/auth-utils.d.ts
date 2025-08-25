@@ -1,12 +1,24 @@
 import type { Logger } from 'pino';
-import type { AuthenticationCreds, CacheStore, SignalKeyStore, SignalKeyStoreWithTransaction, TransactionCapabilityOptions } from '../Types';
+import type {
+    AuthenticationCreds,
+    CacheStore,
+    SignalKeyStore,
+    SignalKeyStoreWithTransaction,
+    TransactionCapabilityOptions
+} from '../Types';
+
 /**
  * Adds caching capability to a SignalKeyStore
  * @param store the store to add caching to
  * @param logger to log trace events
  * @param _cache cache store to use
  */
-export declare function makeCacheableSignalKeyStore(store: SignalKeyStore, logger: Logger, _cache?: CacheStore): SignalKeyStore;
+export declare function makeCacheableSignalKeyStore(
+    store: SignalKeyStore,
+    logger: Logger,
+    _cache?: CacheStore
+): SignalKeyStore;
+
 /**
  * Adds DB like transaction capability (https://en.wikipedia.org/wiki/Database_transaction) to the SignalKeyStore,
  * this allows batch read & write operations & improves the performance of the lib
@@ -14,5 +26,19 @@ export declare function makeCacheableSignalKeyStore(store: SignalKeyStore, logge
  * @param logger logger to log events
  * @returns SignalKeyStore with transaction capability
  */
-export declare const addTransactionCapability: (state: SignalKeyStore, logger: Logger, { maxCommitRetries, delayBetweenTriesMs }: TransactionCapabilityOptions) => SignalKeyStoreWithTransaction;
+export declare const addTransactionCapability: (
+    state: SignalKeyStore,
+    logger: Logger,
+    { maxCommitRetries, delayBetweenTriesMs }: TransactionCapabilityOptions
+) => SignalKeyStoreWithTransaction;
+
+/**
+ * Initialize new auth credentials
+ */
 export declare const initAuthCreds: () => AuthenticationCreds;
+
+/**
+ * Initialize new auth credentials with multi-session support
+ * @param sessionId unique ID for the session
+ */
+export declare const initMultiAuthCreds: (sessionId?: string) => AuthenticationCreds & { sessionId: string };
