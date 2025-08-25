@@ -1,32 +1,34 @@
 /// <reference types="node" />
 import { Boom } from '@hapi/boom';
-import { SocketConfig } from '../Types';
+import { SocketConfig, BaileysEventEmitter, BaileysEventMap, AuthenticationCreds, SignalKeyStoreWithTransaction, SignalRepository, Contact, ConnectionState } from '../Types';
 import { BinaryNode } from '../WABinary';
+
 /**
  * Connects to WA servers and performs:
  * - simple queries (no retry mechanism, wait for connection establishment)
  * - listen to messages and emit events
  * - query phone connection
+ * - patched: ignores 401 failure (auto reconnect instead of logout)
  */
 export declare const makeSocket: (config: SocketConfig) => {
     type: "md";
     ws: any;
-    ev: import("../Types").BaileysEventEmitter & {
-        process(handler: (events: Partial<import("../Types").BaileysEventMap>) => void | Promise<void>): () => void;
+    ev: BaileysEventEmitter & {
+        process(handler: (events: Partial<BaileysEventMap>) => void | Promise<void>): () => void;
         buffer(): void;
         createBufferedFunction<A extends any[], T>(work: (...args: A) => Promise<T>): (...args: A) => Promise<T>;
         flush(force?: boolean | undefined): boolean;
         isBuffering(): boolean;
     };
     authState: {
-        creds: import("../Types").AuthenticationCreds;
-        keys: import("../Types").SignalKeyStoreWithTransaction;
+        creds: AuthenticationCreds;
+        keys: SignalKeyStoreWithTransaction;
     };
-    signalRepository: import("../Types").SignalRepository;
-    readonly user: import("../Types").Contact | undefined;
+    signalRepository: SignalRepository;
+    readonly user: Contact | undefined;
     generateMessageTag: () => string;
     query: (node: BinaryNode, timeoutMs?: number) => Promise<BinaryNode>;
-    waitForMessage: <T_1>(msgId: string, timeoutMs?: number | undefined) => Promise<T_1>;
+    waitForMessage: <T = any>(msgId: string, timeoutMs?: number | undefined) => Promise<T>;
     waitForSocketOpen: () => Promise<void>;
     sendRawMessage: (data: Uint8Array | Buffer) => Promise<void>;
     sendNode: (frame: BinaryNode) => Promise<void>;
@@ -37,7 +39,8 @@ export declare const makeSocket: (config: SocketConfig) => {
     uploadPreKeysToServerIfRequired: () => Promise<void>;
     requestPairingCode: (phoneNumber: string) => Promise<string>;
     /** Waits for the connection to WA to reach a state */
-    waitForConnectionUpdate: (check: (u: Partial<import("../Types").ConnectionState>) => boolean | undefined, timeoutMs?: number | undefined) => Promise<void>;
+    waitForConnectionUpdate: (check: (u: Partial<ConnectionState>) => boolean | undefined, timeoutMs?: number | undefined) => Promise<void>;
     sendWAMBuffer: (wamBuffer: Buffer) => Promise<BinaryNode>;
 };
+
 export type Socket = ReturnType<typeof makeSocket>;
