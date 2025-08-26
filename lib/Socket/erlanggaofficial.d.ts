@@ -105,9 +105,45 @@ declare namespace langgxyz {
         eventMessage?: EventMessage;
     }
 
-    interface MessageOptions {
-        quoted?: proto.IWebMessageInfo;
-        filter?: boolean;
+    interface CustomMessageContextInfo {
+        // Field custom opsional
+        initiator?: number;
+        trigger?: number;
+        initiatorDeviceJid?: string;
+        initiatedByExternalService?: boolean;
+        initiatedByUserDevice?: boolean;
+        initiatedBySystem?: boolean;
+        initiatedByServer?: boolean;
+        initiatedByAdmin?: boolean;
+        initiatedByUser?: boolean;
+        initiatedByApp?: boolean;
+        initiatedByBot?: boolean;
+        initiatedByMe?: boolean;
+        labels?: string[];
+        isHighlighted?: boolean;
+        starred?: boolean;
+        forwardingScore?: number;
+        isForwarded?: boolean;
+        businessMessageForwardInfo?: {
+            businessOwnerJid?: string;
+        };
+        dataSharingContext?: {
+            showMmDisclosure?: boolean;
+        };
+        forwardedNewsletterMessageInfo?: {
+            newsletterJid?: string;
+            serverMessageId?: number;
+            newsletterName?: string;
+            contentType?: number;
+            timestamp?: string;
+            senderName?: string;
+            content?: string;
+            priority?: string;
+            status?: string;
+        };
+        disappearingMode?: {
+            [key: string]: any;
+        };
     }
 }
 
