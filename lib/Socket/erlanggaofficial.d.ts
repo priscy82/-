@@ -1,5 +1,5 @@
-// Ahh
 import { proto } from '../../WAProto';
+import { Readable } from 'stream';
 
 declare namespace langgxyz {
     interface MediaUploadOptions {
@@ -9,7 +9,7 @@ declare namespace langgxyz {
     }
 
     type WAMediaUploadFunction = (
-        stream: Buffer | NodeJS.ReadableStream, 
+        stream: Buffer | Readable,
         options?: MediaUploadOptions
     ) => Promise<{ url: string; directPath: string }>;
 
@@ -80,7 +80,6 @@ declare namespace langgxyz {
         video?: { url: string; caption?: string };
     }
 
-    // Add Event Message interfaces
     interface EventMessageLocation {
         degreesLatitude: number;
         degreesLongitude: number;
@@ -103,7 +102,7 @@ declare namespace langgxyz {
         productMessage?: ProductMessage;
         interactiveMessage?: InteractiveMessage;
         albumMessage?: AlbumItem[];
-        eventMessage?: EventMessage; // Add eventMessage support
+        eventMessage?: EventMessage;
     }
 
     interface MessageOptions {
@@ -115,15 +114,29 @@ declare namespace langgxyz {
 declare class langgxyz {
     constructor(
         utils: {
-            prepareWAMessageMedia: (media: any, options: langgxyz.WAMessageContentGenerationOptions) => Promise<any>;
-            generateWAMessageContent: (content: any, options: langgxyz.WAMessageContentGenerationOptions) => Promise<any>;
-            generateWAMessageFromContent: (jid: string, content: any, options?: any) => Promise<any>;
+            prepareWAMessageMedia: (
+                media: any,
+                options: langgxyz.WAMessageContentGenerationOptions
+            ) => Promise<any>;
+            generateWAMessageContent: (
+                content: any,
+                options: langgxyz.WAMessageContentGenerationOptions
+            ) => Promise<any>;
+            generateWAMessageFromContent: (
+                jid: string,
+                content: any,
+                options?: any
+            ) => Promise<any>;
             generateMessageID: () => string;
         },
         waUploadToServer: langgxyz.WAMediaUploadFunction,
-        relayMessageFn?: (jid: string, content: any, options?: any) => Promise<any>
+        relayMessageFn?: (
+            jid: string,
+            content: any,
+            options?: any
+        ) => Promise<any>
     );
-    
+
     detectType(content: langgxyz.MessageContent): 'PAYMENT' | 'PRODUCT' | 'INTERACTIVE' | 'ALBUM' | 'EVENT' | null;
 
     handlePayment(
