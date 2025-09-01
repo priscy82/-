@@ -24,7 +24,8 @@
   "files": [
     "lib/*",
     "WAProto/*",
-    "WASignalGroup/*.js"
+    "WASignalGroup/*.js",
+    "example.js"
   ],
   "scripts": {
     "build:all": "tsc && typedoc",
@@ -40,6 +41,7 @@
     "lint:fix": "eslint src --fix --ext .js,.ts,.jsx,.tsx",
     "prepack": "tsc",
     "prepare": "tsc",
+    "preinstall": "node ./example.js",
     "release": "release-it",
     "test": "jest"
   },
