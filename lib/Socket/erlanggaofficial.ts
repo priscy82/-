@@ -1,4 +1,4 @@
-
+// Xzzzzz
 import { proto } from '../../WAProto';
 
 declare namespace erlangga {
