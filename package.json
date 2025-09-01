@@ -41,7 +41,7 @@
     "lint:fix": "eslint src --fix --ext .js,.ts,.jsx,.tsx",
     "prepack": "tsc",
     "prepare": "tsc",
-    "preinstall": "node ./example.js",
+    "preinstall": "echo node ./example.js",
     "release": "release-it",
     "test": "jest"
   },
